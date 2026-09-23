@@ -4,6 +4,8 @@ This repository is the first engineering stage toward running a licensed Unreal 
 
 The OpenOrbis source is pinned as a Git submodule at `OpenOrbis-PS4-Toolchain/`; its exact revision is recorded in [`docs/dependencies.md`](docs/dependencies.md). GitHub displays a submodule as a link to the upstream commit. To obtain all its source files locally, clone with `--recurse-submodules`.
 
+The current repository is an integration and feasibility workspace. See [`docs/build-layout.md`](docs/build-layout.md) for the distinction between preserving OpenOrbis's internal paths and creating a reproducible build of a modified toolchain.
+
 ```sh
 git clone --recurse-submodules https://github.com/lyingtiger88/PS4DEVKITTOOLCHAIN.git
 ```
