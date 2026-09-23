@@ -19,6 +19,7 @@ OpenOrbis builds PS4 homebrew. The separate OpenGNM stack supplies a GNM library
 - `tools/audit_upstream.py`: repeatable source snapshot of advertised API version, device extensions, duplicate extension declarations, and explicit unsupported paths. This is a source audit, **not** a hardware test.
 - `probes/vulkan_capabilities.c`: a Vulkan program that prints the device's advertised version, extensions, selected features, limits, memory heaps, and texture/depth format support as JSON. Its output must be collected from PS4 hardware to evaluate the PS4 driver. Running it on a PC only validates the probe.
 - `docs/roadmap.md`: evidence gates and staged Unreal integration plan.
+- `docs/unreal-ps4-execution-requirements.md`: component inventory from Unreal build and shader cooking through packaging and hardware tests.
 - `docs/findings.md`: findings tied to upstream commit IDs, with unresolved claims identified.
 
 ## Reproduce the source audit

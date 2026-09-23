@@ -2,6 +2,8 @@
 
 The target is an optimized, usable Unreal game build on PS4 homebrew hardware. The stages below are **gates**, not claims of implementation. Pin the exact Unreal and upstream commits before engine integration.
 
+The detailed component inventory and first vertical slice are in [`unreal-ps4-execution-requirements.md`](unreal-ps4-execution-requirements.md).
+
 | Gate | Deliverable | Pass condition |
 | --- | --- | --- |
 | 0. Source and licensing | Source audit, dependency revisions, code sharing policy | Reproducible audit; no restricted source or SDK in this public repo |
