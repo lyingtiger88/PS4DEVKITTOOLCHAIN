@@ -2,7 +2,11 @@
 
 This repository is the first engineering stage toward running a licensed Unreal game as PS4 homebrew. It is **not** an Unreal platform target, a playable port, or a PlayStation Store publishing path.
 
-The OpenOrbis source snapshot reserved for this project is pinned in [`docs/dependencies.md`](docs/dependencies.md). Upstream components are kept separate from this repository so their licenses, history, and updates remain clear.
+The OpenOrbis source is pinned as a Git submodule at `OpenOrbis-PS4-Toolchain/`; its exact revision is recorded in [`docs/dependencies.md`](docs/dependencies.md). GitHub displays a submodule as a link to the upstream commit. To obtain all its source files locally, clone with `--recurse-submodules`.
+
+```sh
+git clone --recurse-submodules https://github.com/lyingtiger88/PS4DEVKITTOOLCHAIN.git
+```
 
 ## Why start here?
 
@@ -22,7 +26,7 @@ git clone https://github.com/PS4-OpenGNM/vulkan-ps4.git third_party/vulkan-ps4
 python3 tools/audit_upstream.py third_party/vulkan-ps4 > audit.json
 ```
 
-The upstream checkout is deliberately excluded from this repository. Record its exact commit alongside every audit.
+The graphics driver checkout is deliberately excluded from this repository. Record its exact commit alongside every audit.
 
 ## Build the probe on a PC
 
