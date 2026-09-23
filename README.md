@@ -12,7 +12,7 @@ git clone --recurse-submodules https://github.com/lyingtiger88/PS4DEVKITTOOLCHAI
 
 ## Why start here?
 
-OpenOrbis builds PS4 homebrew. The separate OpenGNM stack supplies a GNM library, a shader compiler, and a Vulkan translation layer. The upstream `vulkan-ps4` README describes a Vulkan 1.0 implementation, while its current source reports Vulkan 1.1 and contains unsupported or stub paths. API names and a triangle demonstration do not establish compatibility with Unreal's renderer. We will measure the actual capabilities before choosing whether to adapt Unreal's Vulkan RHI or write a PS4 RHI.
+OpenOrbis builds PS4 homebrew. The separate OpenGNM stack supplies a GNM library, a shader compiler, and a Vulkan translation layer. The pinned stack's `vulkan-ps4` source reports Vulkan 1.0 and contains unsupported or stub paths; a newer driver revision audited independently reports Vulkan 1.1. These are different revisions. API names and a triangle demonstration do not establish compatibility with Unreal's renderer. We will measure the actual capabilities before choosing whether to adapt Unreal's Vulkan RHI or write a PS4 RHI.
 
 ## What is in this repository?
 
@@ -21,6 +21,9 @@ OpenOrbis builds PS4 homebrew. The separate OpenGNM stack supplies a GNM library
 - `docs/roadmap.md`: evidence gates and staged Unreal integration plan.
 - `docs/unreal-ps4-execution-requirements.md`: component inventory from Unreal build and shader cooking through packaging and hardware tests.
 - `docs/findings.md`: findings tied to upstream commit IDs, with unresolved claims identified.
+- `graphics.lock.json` and `tools/bootstrap_graphics.py`: pinned, repeatable checkout of OpenGNM and its header dependencies.
+- `probes/Makefile.orbis`: preliminary cross-build path for a PS4 probe ELF and `eboot.bin`, pending a built SDK and hardware verification.
+- `docs/graphics-baseline.md`: exact graphics revisions, host test evidence, and current cross-build blockers.
 
 ## Reproduce the source audit
 
@@ -29,7 +32,31 @@ git clone https://github.com/PS4-OpenGNM/vulkan-ps4.git third_party/vulkan-ps4
 python3 tools/audit_upstream.py third_party/vulkan-ps4 > audit.json
 ```
 
-The graphics driver checkout is deliberately excluded from this repository. Record its exact commit alongside every audit.
+The graphics driver checkout is deliberately excluded from this repository. Record its exact commit alongside every audit. The committed `docs/audit-stack-vulkan.json` captures the **pinned stack** driver; `docs/audit-2026-09-23.json` captures the separately audited newer driver.
+
+## Fetch the pinned graphics sources
+
+```sh
+python3 tools/bootstrap_graphics.py --fetch
+python3 tools/bootstrap_graphics.py --preflight
+python3 tools/run_host_graphics_tests.py
+```
+
+The checkout is stored in `.deps/graphics/opengnm-stack/` and excluded from Git. Its submodules and Vulkan/SPIR-V headers use the exact revisions in `graphics.lock.json`. Fetching source does not install an OpenOrbis SDK or run a PS4 build. The preflight report shows missing build tools and SDK artifacts on the current machine.
+
+The host test command builds the generic OpenGNM backend and runs its upstream tests. It does not exercise the PS4 GPU. Its test linker places the math library after the static OpenGNM archive, working around the upstream Makefile's host link ordering without changing vendor code.
+
+Host tests leave OpenGNM configured and built for the generic backend. Before a PS4 probe build, select `config.orbis.mak` and rebuild `libopengnm.a` for Orbis using the pinned stack's build guide. `make -f probes/Makefile.orbis check` checks the Orbis configuration and archive member.
+
+After building OpenGNM, `opengnm-psbc`, and `vulkan-ps4` for Orbis following their pinned upstream instructions and installing a built OpenOrbis SDK, the cross-build path for the capability probe is:
+
+```sh
+export OO_PS4_TOOLCHAIN=/path/to/built/OpenOrbis-PS4-Toolchain
+make -f probes/Makefile.orbis check
+make -f probes/Makefile.orbis self
+```
+
+This produces an ELF and `eboot.bin` in `build/orbis-probe/`; an installable PKG and a successful PS4 runtime test are still separate milestones.
 
 ## Build the probe on a PC
 

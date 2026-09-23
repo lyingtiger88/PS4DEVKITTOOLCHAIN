@@ -1,0 +1,73 @@
+# Compile the Vulkan capability probe against the pinned OpenGNM stack.
+# Requires the built OpenOrbis SDK and the three Orbis libraries described
+# in the upstream OpenGNM build guide. An ELF/eboot is not yet an installable PKG.
+
+ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+STACK ?= $(ROOT)/.deps/graphics/opengnm-stack
+SDK ?= $(OO_PS4_TOOLCHAIN)
+OUT ?= $(ROOT)/build/orbis-probe
+
+VK_ROOT := $(STACK)/vulkan-ps4
+GNM_ROOT := $(STACK)/opengnm
+PSBC_ROOT := $(STACK)/opengnm-psbc
+VK_HEADERS := $(STACK)/Vulkan-Headers
+
+VK_LIB := $(VK_ROOT)/libvulkan_ps4.a
+GNM_LIB := $(GNM_ROOT)/libopengnm.a
+PSBC_LIB := $(PSBC_ROOT)/libpsbc.orbis.a
+
+ifeq ($(origin CC),default)
+CC := clang
+endif
+ifeq ($(origin LD),default)
+LD := ld.lld
+endif
+MKFSELF ?= $(SDK)/bin/linux/create-fself
+
+CFLAGS := --target=x86_64-pc-freebsd12-elf -fPIC -DORBIS -D__ORBIS__ -D__PS4__ \
+          -DVK_USE_PLATFORM_PS4 -std=c11 -O2 -g -Wall -Wextra \
+          -isysroot $(SDK) \
+          -I$(VK_HEADERS)/include -I$(VK_ROOT)/include -I$(GNM_ROOT)/include \
+          -I$(PSBC_ROOT)/libpsbc -I$(SDK)/include -I$(SDK)/include/orbis
+
+APP_LIBS := -lkernel -lc -lc++ -lc++abi -lunwind -lSceGnmDriver -lSceVideoOut
+PAID := 0x3800000000000011
+
+.PHONY: all check elf self
+all: elf
+
+check:
+	@test -n "$(SDK)" || { echo 'Set OO_PS4_TOOLCHAIN to a built OpenOrbis SDK'; exit 1; }
+	@command -v $(CC) >/dev/null || { echo 'Missing compiler: $(CC)'; exit 1; }
+	@command -v $(LD) >/dev/null || { echo 'Missing linker: $(LD)'; exit 1; }
+	@for file in "$(SDK)/link.x" "$(SDK)/lib/crt1.o" "$(SDK)/lib/crti.o" "$(SDK)/lib/crtn.o" \
+	  "$(VK_HEADERS)/include/vulkan/vulkan.h" "$(VK_LIB)" "$(GNM_LIB)" "$(PSBC_LIB)"; do \
+	  test -f "$$file" || { echo "Missing dependency: $$file"; exit 1; }; \
+	done
+	@grep -q '^PLATFORM=orbis$$' "$(GNM_ROOT)/config.mak" || { echo 'OpenGNM must be rebuilt for Orbis after host tests'; exit 1; }
+	@command -v llvm-ar >/dev/null || { echo 'Missing archiver: llvm-ar'; exit 1; }
+	@llvm-ar t "$(GNM_LIB)" | grep -qx driver_orbis.o || { echo 'OpenGNM archive has no Orbis driver; rebuild it'; exit 1; }
+	@echo 'Orbis probe build prerequisites are present'
+
+$(OUT):
+	@mkdir -p "$@"
+
+$(OUT)/probe.o: $(ROOT)/probes/vulkan_capabilities.c | $(OUT) check
+	$(CC) $(CFLAGS) -c "$<" -o "$@"
+
+$(OUT)/probe.elf: $(OUT)/probe.o | check
+	$(LD) -m elf_x86_64 --script "$(SDK)/link.x" --eh-frame-hdr \
+	  -L"$(SDK)/lib" -pie -z max-page-size=0x4000 --gc-sections \
+	  --dynamic-linker /libexec/ld-elf.so.1 -o "$@" \
+	  "$(SDK)/lib/crt1.o" "$(SDK)/lib/crti.o" $^ \
+	  --start-group "$(VK_LIB)" "$(GNM_LIB)" "$(PSBC_LIB)" --end-group \
+	  $(APP_LIBS) "$(SDK)/lib/crtn.o"
+
+elf: check $(OUT)/probe.elf
+
+$(OUT)/eboot.bin: $(OUT)/probe.elf
+	@test -x "$(MKFSELF)" || { echo "Missing create-fself: $(MKFSELF)"; exit 1; }
+	cd "$(OUT)" && "$(MKFSELF)" -in=probe.elf -out=probe.oelf \
+	  -eboot=eboot.bin --paid $(PAID)
+
+self: elf $(OUT)/eboot.bin

@@ -1,0 +1,155 @@
+{
+  "upstream": "PS4-OpenGNM/vulkan-ps4",
+  "revision": "538732bedd7379c9f709b46da43d9eaea867e0e8",
+  "advertised_api_version_expression": "1,0,0",
+  "advertised_device_extension_count": 1,
+  "duplicate_device_extensions": {},
+  "explicit_unsupported_text_matches": [
+    {
+      "file": "vk_ps4_buffer.c",
+      "line": 121,
+      "text": "return VK_ERROR_FORMAT_NOT_SUPPORTED;"
+    },
+    {
+      "file": "vk_ps4_descriptor.c",
+      "line": 92,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 7,
+      "text": "* Functions not yet implemented return VK_ERROR_FEATURE_NOT_PRESENT or are"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 153,
+      "text": "/* Functions we haven't implemented yet — return VK_ERROR_FEATURE_NOT_PRESENT */"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 154,
+      "text": "STUB_NOT_IMPL(vk_ps4_EnumerateInstanceExtensionProperties, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 155,
+      "text": "STUB_NOT_IMPL(vk_ps4_EnumerateInstanceLayerProperties, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 156,
+      "text": "STUB_NOT_IMPL(vk_ps4_EnumerateDeviceExtensionProperties, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 157,
+      "text": "STUB_NOT_IMPL(vk_ps4_EnumerateDeviceLayerProperties, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 159,
+      "text": "STUB_NOT_IMPL(vk_ps4_GetPhysicalDeviceImageFormatProperties, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 162,
+      "text": "STUB_NOT_IMPL(vk_ps4_CreateBufferView, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 164,
+      "text": "STUB_NOT_IMPL(vk_ps4_CreatePipelineCache, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 166,
+      "text": "STUB_NOT_IMPL(vk_ps4_GetPipelineCacheData, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 167,
+      "text": "STUB_NOT_IMPL(vk_ps4_MergePipelineCaches, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 192,
+      "text": "STUB_NOT_IMPL(vk_ps4_QueueBindSparse, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 176,
+      "text": "/* === Remaining stub entrypoints (return VK_ERROR_FEATURE_NOT_PRESENT or no-op) === */"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 181,
+      "text": "(void)a;(void)b;(void)c;(void)d;(void)e;(void)f;(void)g; return VK_ERROR_FORMAT_NOT_SUPPORTED;"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 184,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkCreateBufferView(VkDevice a, const VkBufferViewCreateInfo *b, const VkAllocationCallbacks *c, VkBufferView *d) { (void)a;(void)b;(void)c;(void)d; r"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 186,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkCreatePipelineCache(VkDevice a, const VkPipelineCacheCreateInfo *b, const VkAllocationCallbacks *c, VkPipelineCache *d) { (void)a;(void)b;(void)c;("
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 188,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineCacheData(VkDevice a, VkPipelineCache b, size_t *c, void *d) { (void)a;(void)b;(void)c;(void)d; return VK_ERROR_FEATURE_NOT_PRESENT; }"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 189,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkMergePipelineCaches(VkDevice a, VkPipelineCache b, uint32_t c, const VkPipelineCache *d) { (void)a;(void)b;(void)c;(void)d; return VK_ERROR_FEATURE"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 211,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkQueueBindSparse(VkQueue a, uint32_t b, const VkBindSparseInfo *c, VkFence d) { (void)a;(void)b;(void)c;(void)d; return VK_ERROR_FEATURE_NOT_PRESENT"
+    },
+    {
+      "file": "vk_ps4_memory.c",
+      "line": 57,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 444,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 577,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 642,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_query.c",
+      "line": 34,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_shader.c",
+      "line": 127,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_shader.c",
+      "line": 140,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_stubs.c",
+      "line": 25,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    }
+  ],
+  "interpretation": "Source inspection only; inspect guards and test on PS4 before treating a path as supported or broken."
+}

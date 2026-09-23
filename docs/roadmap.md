@@ -22,7 +22,7 @@ For the first Unreal scene, disable features requiring unsupported capabilities.
 
 ## Next executable work
 
-1. Run `tools/audit_upstream.py` for pinned upstream revisions and attach the resulting report to a development issue.
-2. Cross-compile the Vulkan probe against the exact OpenGNM stack and run it on actual PS4 hardware. A host run validates only the probe.
-3. Add a GPU test app for texture upload, depth attachment, offscreen pass, and readback, recording expected images and failure modes.
+1. Reproduce the pinned stack's source audit and 88 generic OpenGNM host tests (`graphics-baseline.md`); investigate any changes in a future lock update.
+2. Build the OpenOrbis SDK and the pinned stack's Orbis archives, then validate the preliminary `probes/Makefile.orbis` cross-build and run its output on PS4 hardware. A host run validates only the probe.
+3. Package the probe as a homebrew PKG, collect its JSON and console details, then add a GPU test app for texture upload, depth attachment, offscreen pass, and readback.
 4. Select the Unreal version and a small, owned test project; compare its actual required Vulkan calls and runtime services to the results.

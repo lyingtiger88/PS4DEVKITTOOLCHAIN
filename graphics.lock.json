@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "repositories": {
+    "opengnm-stack": {
+      "url": "https://github.com/PS4-OpenGNM/opengnm-stack.git",
+      "commit": "2de9fc54ca33b39baa0ace59c6b0059e5de94a63"
+    },
+    "Vulkan-Headers": {
+      "url": "https://github.com/KhronosGroup/Vulkan-Headers.git",
+      "commit": "6802bb4733b63ed5efd3adb308a6c885ef180ea1"
+    },
+    "SPIRV-Headers": {
+      "url": "https://github.com/KhronosGroup/SPIRV-Headers.git",
+      "commit": "f1fa5178eced755a189619b8e4546bcc2ce69fdd"
+    }
+  },
+  "stack_submodules": {
+    "opengnm": "c51243f333a1a964894903da080a508f7af4d91f",
+    "opengnm-psbc": "a92a1228ea3a64e4be9f0e61c2a65a5aa7ffed92",
+    "vulkan-ps4": "538732bedd7379c9f709b46da43d9eaea867e0e8",
+    "freegnm-examples": "ffd055563e5b849ebef1b276ba29e730199670f8"
+  }
+}
