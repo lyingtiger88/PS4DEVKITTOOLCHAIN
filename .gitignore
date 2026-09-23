@@ -1,0 +1,12 @@
+build/
+third_party/
+__pycache__/
+*.pyc
+*.json
+!docs/*.json
+*.pkg
+*.elf
+*.o
+*.a
+*.so
+*.sb

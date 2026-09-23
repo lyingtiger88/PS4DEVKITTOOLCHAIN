@@ -1,0 +1,97 @@
+{
+  "upstream": "PS4-OpenGNM/vulkan-ps4",
+  "revision": "f4d940b723771b3fe637e8ac0704bb5d6ab19622",
+  "advertised_api_version_expression": "1,1,0",
+  "advertised_device_extension_count": 35,
+  "duplicate_device_extensions": {
+    "VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME": 2
+  },
+  "explicit_unsupported_text_matches": [
+    {
+      "file": "vk_ps4_buffer.c",
+      "line": 121,
+      "text": "return VK_ERROR_FORMAT_NOT_SUPPORTED;"
+    },
+    {
+      "file": "vk_ps4_descriptor.c",
+      "line": 96,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 7,
+      "text": "* Functions not yet implemented return VK_ERROR_FEATURE_NOT_PRESENT or are"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 157,
+      "text": "/* Functions we haven't implemented yet — return VK_ERROR_FEATURE_NOT_PRESENT */"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 177,
+      "text": "if (!pImageFormatProperties) return VK_ERROR_FORMAT_NOT_SUPPORTED;"
+    },
+    {
+      "file": "vk_ps4_dispatch.c",
+      "line": 519,
+      "text": "STUB_NOT_IMPL(vk_ps4_QueueBindSparse, VkResult, VK_ERROR_FEATURE_NOT_PRESENT)"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 178,
+      "text": "/* === Remaining stub entrypoints (return VK_ERROR_FEATURE_NOT_PRESENT or no-op) === */"
+    },
+    {
+      "file": "vk_ps4_entrypoints.c",
+      "line": 229,
+      "text": "VKAPI_ATTR VkResult VKAPI_CALL vkQueueBindSparse(VkQueue a, uint32_t b, const VkBindSparseInfo *c, VkFence d) { (void)a;(void)b;(void)c;(void)d; return VK_ERROR_FEATURE_NOT_PRESENT"
+    },
+    {
+      "file": "vk_ps4_memory.c",
+      "line": 57,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 531,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 726,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_pipeline.c",
+      "line": 818,
+      "text": "overall_result = VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_query.c",
+      "line": 34,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_shader.c",
+      "line": 180,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_shader.c",
+      "line": 195,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_stubs.c",
+      "line": 30,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    },
+    {
+      "file": "vk_ps4_vulkan11.c",
+      "line": 676,
+      "text": "return VK_ERROR_FEATURE_NOT_PRESENT;"
+    }
+  ],
+  "interpretation": "Source inspection only; inspect guards and test on PS4 before treating a path as supported or broken."
+}
