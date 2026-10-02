@@ -43,9 +43,74 @@ jobs:
           test -f docs/graphics-test-matrix.md
           test -f docs/renderer-decision-log.md
           test -f docs/test-readiness.md
+          test -f docs/cross-build-validation.md
 
       - name: Upload host probe result
         uses: actions/upload-artifact@v4
         with:
           name: vulkan-capabilities-host
           path: vulkan-capabilities.json
+
+  openorbis-cross-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install cross-build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld make curl
+
+      - name: Download pinned OpenOrbis release
+        env:
+          OO_VERSION: v0.5.4
+          OO_SHA256: 3c7cd5bb593ca74fa1c13fd59f3938dc0fc07985167f7275063019e63abe4526
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/openorbis"
+          curl -fL --retry 3             "https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/${OO_VERSION}/toolchain-llvm-18.tar.gz"             -o "$HOME/openorbis/toolchain.tar.gz"
+          echo "${OO_SHA256}  $HOME/openorbis/toolchain.tar.gz" | sha256sum -c -
+          tar -xzf "$HOME/openorbis/toolchain.tar.gz" -C "$HOME/openorbis"
+
+      - name: Report OpenOrbis toolchain
+        env:
+          OO_PS4_TOOLCHAIN: /home/runner/openorbis
+        run: |
+          set -euo pipefail
+          test -f "$OO_PS4_TOOLCHAIN/link.x"
+          test -d "$OO_PS4_TOOLCHAIN/include"
+          test -d "$OO_PS4_TOOLCHAIN/lib"
+          test -d "$OO_PS4_TOOLCHAIN/bin/linux"
+          echo "OO_PS4_TOOLCHAIN=$OO_PS4_TOOLCHAIN"
+          clang --version
+          ld.lld --version
+          find "$OO_PS4_TOOLCHAIN/bin/linux" -maxdepth 1 -type f -printf '%f\n' | sort | head -40
+
+      - name: Cross-build OpenOrbis hello_world sample
+        env:
+          OO_PS4_TOOLCHAIN: /home/runner/openorbis
+        working-directory: /home/runner/openorbis/samples/hello_world
+        run: |
+          set -euo pipefail
+          make clean || true
+          make
+
+      - name: Validate cross-build outputs
+        env:
+          OO_PS4_TOOLCHAIN: /home/runner/openorbis
+        working-directory: /home/runner/openorbis/samples/hello_world
+        run: |
+          set -euo pipefail
+          test -s eboot.bin
+          test -s x64/Debug/hello_world.elf
+          file eboot.bin
+          file x64/Debug/hello_world.elf
+
+      - name: Upload OpenOrbis cross-build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openorbis-hello-world-cross-build
+          path: |
+            /home/runner/openorbis/samples/hello_world/eboot.bin
+            /home/runner/openorbis/samples/hello_world/x64/Debug/hello_world.elf
