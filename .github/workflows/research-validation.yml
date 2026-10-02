@@ -1,0 +1,30 @@
+name: Research validation
+
+on:
+  push:
+    branches:
+      - main
+      - "agent/**"
+      - "research/**"
+      - "roadmap/**"
+  pull_request:
+
+jobs:
+  host-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python syntax check
+        run: python3 -m compileall -q tools probes
+
+      - name: Environment report
+        run: python3 tools/validate_environment.py --json
+
+      - name: Verify required research files
+        run: |
+          test -f probes/vulkan_capabilities.c
+          test -f tools/audit_upstream.py
+          test -f docs/graphics-test-matrix.md
+          test -f docs/renderer-decision-log.md
