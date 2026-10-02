@@ -16,8 +16,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Vulkan development/runtime packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvulkan-dev mesa-vulkan-drivers
+
       - name: Python syntax check
         run: python3 -m compileall -q tools probes
+
+      - name: Build Vulkan capability probe
+        run: |
+          cc probes/vulkan_capabilities.c -std=c11 -Wall -Wextra -Wpedantic -O2 -o vulkan-capability-probe -lvulkan
+
+      - name: Run Vulkan capability probe
+        run: |
+          VK_LOADER_DEBUG=error ./vulkan-capability-probe | tee vulkan-capabilities.json
+          python3 -m json.tool vulkan-capabilities.json >/dev/null
 
       - name: Environment report
         run: python3 tools/validate_environment.py --json
@@ -28,3 +42,10 @@ jobs:
           test -f tools/audit_upstream.py
           test -f docs/graphics-test-matrix.md
           test -f docs/renderer-decision-log.md
+          test -f docs/test-readiness.md
+
+      - name: Upload host probe result
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulkan-capabilities-host
+          path: vulkan-capabilities.json
